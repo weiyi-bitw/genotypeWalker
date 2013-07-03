@@ -79,6 +79,7 @@ void ANOVAFileWalker::walk(const char* fname, const char delim = '\t'){
 		std::istringstream iss2(line);
 		std::getline(iss2, token, delim);
 		std::string feature = token;
+		//std::cout << feature << std::endl;
 		int idx = 0;
 		while(std::getline(iss2, token, delim)){
 			if(assignment[idx] >= 0){

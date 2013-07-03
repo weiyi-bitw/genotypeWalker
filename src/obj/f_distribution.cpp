@@ -175,8 +175,12 @@ double Fdistribution::p(double f){
 
 double Fdistribution::cdf(double f){
 	if(f < 0.){
-		printf("Bad f. Must > 0.");
-		throw 1;
+		if(fabs(f) > 1E-10){
+			printf("Bad f. Must >= 0.");
+			throw 1;
+		}else{
+			return 0.;
+		}
 	}
 	return betai(0.5*nu1, 0.5*nu2, nu1*f/(nu2+nu1*f));
 }

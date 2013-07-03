@@ -67,8 +67,10 @@ void AOVResult::saveResult(
 	pfct = pfctIn;
 	p_value = new double[m];
 	fDist = new Fdistribution(d1, d2);
-	for(int i = 0; i < m; i++)
+	for(int i = 0; i < m; i++){
+		printf("%lf\n", f[i]);
 		p_value[i] = 1. - fDist->cdf(f[i]);
+	}printf("\n");
 }
 
 double* AOVResult::getPvalue() const{
@@ -142,8 +144,8 @@ void Anova::anova(const double* const* dataIn, int mIn, int nIn){
 
 	for(int l = 0; l < mIn; ++l){
 	//initialization
-		ssWG[l] = ssTot[l] = 0;
-		for(int i = 0; i < nl; i++) muG[i] = muG2[i] = nG[i] = 0;
+		ssWG[l] = ssTot[l] = 0.;
+		for(int i = 0; i < nl; i++) muG[i] = muG2[i] = nG[i] = 0.;
 
 		for(int i = 0; i < n; i++){
 			int c = fct->getValue(i);
@@ -152,7 +154,7 @@ void Anova::anova(const double* const* dataIn, int mIn, int nIn){
 			nG[c]++;
 		}
 	
-		double muTot = 0;
+		double muTot = 0.;
 		for(int i = 0; i < nl; i++){
 			ssWG[l] += (muG2[i] - muG[i]*muG[i]/nG[i] );
 			muTot += muG[i];
@@ -162,7 +164,7 @@ void Anova::anova(const double* const* dataIn, int mIn, int nIn){
 	
 		ssBG[l] = ssTot[l] - ssWG[l];
 		f[l] = ssBG[l] * d2 / d1 / ssWG[l];
-		//printf("ssWG: %lf \t ssTot: %lf \t f: %lf \n", ssWG[l], ssTot[l], f[l]);
+		printf("ssWG: %lf \t ssTot: %lf \t f: %lf \n", ssWG[l], ssTot[l], f[l]);
 	}
 
 	delete [] nG;
