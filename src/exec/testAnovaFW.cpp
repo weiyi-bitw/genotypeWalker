@@ -41,6 +41,9 @@ int main ( int argc, char *argv[] )
 	const int numProbes = conf.getInt("NUM_PROBES");
 	const std::string ec10File = conf.get("EC10_FILE");
 	std::string genotypeFiles = conf.get("GENOTYPE_FILE");
+	const double pTh = conf.getDoub("P_VALUE");
+
+	std::cout << pTh << std::endl;
 
 	std::queue<std::string> gq;
 	std::istringstream iss(genotypeFiles);
@@ -52,7 +55,7 @@ int main ( int argc, char *argv[] )
 	std::cout << gq.size() << " genotype files detected." << std::endl;	
 
 	std::cout << "Initialize ANOVA file walker." << std::endl;	 
-	ANOVAFileWalker afw(numProbes);
+	ANOVAFileWalker afw(numProbes, pTh);
 
 	std::cout << "Load EC10 file." << std::endl;	 
 	afw.loadResponseFile(ec10File.c_str(), '\t');

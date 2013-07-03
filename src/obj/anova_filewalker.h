@@ -11,12 +11,13 @@
 class ANOVAFileWalker{
   private:
 	int nFeatures;
+	double pThreshold;
 	Matrix data;
 	Anova aov;
   public:
 	LeaderBoard* plb;
 
-	ANOVAFileWalker(int n);
+	ANOVAFileWalker(int n, double pth);
 	~ANOVAFileWalker();
 	
 	void loadResponseFile(const char* fname, const char delim);

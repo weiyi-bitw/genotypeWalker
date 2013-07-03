@@ -27,11 +27,12 @@ class LeaderBoard{
 	std::vector<ScoredItem*>* rankedLists;
 	int nList;
 	int nLeader;
+	double threshold;
 	bool filled;
 	friend std::ostream& operator<< (std::ostream &, LeaderBoard &);
   public:
 	LeaderBoard();
-	LeaderBoard(int l, int n, std::string* lns);
+	LeaderBoard(int l, int n, double th, std::string* lns);
 	~LeaderBoard();
 
 	void insert(std::string name, double* ss);

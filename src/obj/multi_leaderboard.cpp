@@ -26,9 +26,10 @@ ScoredItem::ScoredItem(std::string n, double s){
 ScoredItem::~ScoredItem(){}
 
 LeaderBoard::LeaderBoard(){}
-LeaderBoard::LeaderBoard(int l, int n, std::string* lns){
+LeaderBoard::LeaderBoard(int l, int n, double th, std::string* lns){
 	nList = l;
 	nLeader = n;
+	threshold = th;
 	filled = false;
 	rankedLists = new std::vector<ScoredItem*>[nList];
 	for(int i = 0; i < nList; i++){
@@ -49,8 +50,10 @@ LeaderBoard::~LeaderBoard(){
 
 void LeaderBoard::insert(std::string name, double *ss){
 	for(int i = 0; i < nList; i++){
-		ScoredItem* si = new ScoredItem(name, ss[i]);
-		rankedLists[i].push_back(si);
+		if(ss[i] <= threshold){
+			ScoredItem* si = new ScoredItem(name, ss[i]);
+			rankedLists[i].push_back(si);
+		}
 	}
 	for(int i = 0; i < nList; i++){
 		std::sort(rankedLists[i].begin(),rankedLists[i].end(), Comparator_ascend());
@@ -68,10 +71,20 @@ std::ostream & operator<<(std::ostream &os, LeaderBoard &lb ){
 	for( ; it != lb.listMap.end(); ++it){
 		os << "\t" << it->first << "\t" << it->first;
 	}os << std::endl;
-	for(int i = 0; i < lb.rankedLists[0].size(); i++){
-		os << lb.rankedLists[0][i]->name << "\t" << lb.rankedLists[0][i]->score;
+	for(int i = 0; i < lb.nLeader; i++){
+		
+		if(lb.rankedLists[0].size() > i){
+			os << lb.rankedLists[0][i]->name << "\t" << lb.rankedLists[0][i]->score;
+		}else{
+			os << "\t";
+		}
+		
 		for(int j = 1; j < lb.nList; j++){
-			os << "\t" << lb.rankedLists[j][i]->name << "\t" << lb.rankedLists[j][i]->score;
+			if(lb.rankedLists[j].size() > i){
+				os << "\t" << lb.rankedLists[j][i]->name << "\t" << lb.rankedLists[j][i]->score;
+			}else{
+				os << "\t\t";
+			}
 		}os << std::endl;
 	}
 	return os;	

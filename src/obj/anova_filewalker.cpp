@@ -18,8 +18,9 @@
 
 #include "anova_filewalker.h"
 
-ANOVAFileWalker::ANOVAFileWalker(int n){
+ANOVAFileWalker::ANOVAFileWalker(int n, double pth){
 	nFeatures = n;
+	pThreshold = pth;
 }
 ANOVAFileWalker::~ANOVAFileWalker(){
 	if(plb != NULL){
@@ -35,7 +36,8 @@ void ANOVAFileWalker::loadResponseFile(const char* fname, const char delim= '\t'
 	for(int i = 0; i < data.getNrow(); i++){
 		listNames[i] = data.getRowName(i);
 	}
-	plb = new LeaderBoard(data.getNrow(), nFeatures, listNames);
+	//std::cout << pThreshold << std::endl;
+	plb = new LeaderBoard(data.getNrow(), nFeatures, pThreshold, listNames);
 	delete [] listNames;
 }
 
