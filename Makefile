@@ -9,7 +9,7 @@ SRC   := $(foreach sdir,$(SRC_DIR),$(wildcard $(sdir)/*.cpp))
 OBJ   := $(patsubst src/%.cpp,build/%.o,$(SRC))
 INCLUDES  := $(addprefix -I,$(SRC_DIR))
 
-vpath %.cpp $(SRC_DIR), %.c $(SRC_DIR)
+vpath %.cpp $(SRC_DIR)
 
 define make-goal
 $1/%.o: %.cpp
