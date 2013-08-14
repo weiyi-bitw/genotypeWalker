@@ -18,6 +18,7 @@ class Matrix{
 	std::vector<std::string> colnames;
 	int ncol;
 	int nrow;
+	double* buffer;
 	double** data;
 
   public:

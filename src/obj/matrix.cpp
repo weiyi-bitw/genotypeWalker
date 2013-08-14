@@ -20,15 +20,17 @@
 
 Matrix::Matrix(){
 	data = NULL;
+	buffer = NULL;
 }
 
 Matrix::~Matrix(){
 	if(data != NULL){
-		for(int i = 0; i < nrow; i++)
-			delete [] data[i];
-		
 		delete [] data;
 		data = NULL;
+	}
+	if(buffer != NULL){
+		delete [] buffer;
+		buffer = NULL;
 	}
 }
 
@@ -52,8 +54,9 @@ void Matrix::parseFile(const char* inFile, char const delim){
 
 	std::cout << "Dimension: " << m <<  "\t" << n << std::endl; 
 
+	buffer = new double[m*n];
 	data = new double*[m];
-	for(int i = 0; i < m; i++) data[i] = new double[n];
+	for(int i = 0; i < m; i++) data[i] = &buffer[i*n];
 	
 	ifs.close();
 
@@ -112,18 +115,21 @@ std::map<std::string, int> Matrix::getColMap() const{
 }
 
 void Matrix::transpose(){
+	double* newBuffer = new double[ncol*nrow];
 	double** newData = new double*[ncol];
-	for(int i = 0; i < ncol; i++){
-		newData[i] = new double[nrow];
-	}
+	for(int i = 0; i < ncol; i++)
+		newData[i] = &newBuffer[i*nrow];
+	
 	for(int i = 0; i < ncol; i++){
 		for(int j = 0; j < nrow; j++){
 			newData[i][j] = data[j][i];
 		}
 	}
-	for(int i = 0; i < nrow; i++)
-		delete [] data[i];
-		
+	
+	delete [] buffer;
+	buffer = newBuffer;
+	newBuffer = NULL;
+
 	delete [] data;
 	data = newData;
 	newData = NULL;
