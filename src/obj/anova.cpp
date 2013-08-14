@@ -67,10 +67,8 @@ void AOVResult::saveResult(
 	pfct = pfctIn;
 	p_value = new double[m];
 	fDist = new Fdistribution(d1, d2);
-	for(int i = 0; i < m; i++){
-		printf("%lf\n", f[i]);
+	for(int i = 0; i < m; i++)
 		p_value[i] = 1. - fDist->cdf(f[i]);
-	}printf("\n");
 }
 
 double* AOVResult::getPvalue() const{
@@ -164,7 +162,7 @@ void Anova::anova(const double* const* dataIn, int mIn, int nIn){
 	
 		ssBG[l] = ssTot[l] - ssWG[l];
 		f[l] = ssBG[l] * d2 / d1 / ssWG[l];
-		printf("ssWG: %lf \t ssTot: %lf \t f: %lf \n", ssWG[l], ssTot[l], f[l]);
+		//printf("ssWG: %lf \t ssTot: %lf \t f: %lf \n", ssWG[l], ssTot[l], f[l]);
 	}
 
 	delete [] nG;

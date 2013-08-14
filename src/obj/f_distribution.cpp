@@ -64,6 +64,16 @@ double Fdistribution::betai(const double a, const double b, const double x){
 	if(x < (a+1.0)/(a+b+2.0)) return bt*betacf(a, b, x)/a;
 	else return 1.0-bt*betacf(b, a, 1.0-x)/b;
 }
+double Fdistribution::betailn(const double a, const double b, const double x){
+	double bt;
+	if( a <= 0.0 || b <= 0.0) throw("Bad a or b in betai(a, b, x). Both must > 0.");
+	if( x < 0.0 || x > 1.0) throw("Bad x in betai(a, b, x). 0 <= x <= 1");
+	if( x == 0.0 || x == 1.0 ) return x;
+	if(a > SWITCH && b > SWITCH) return log(betaiapprox(a, b, x));
+	bt = gammln(a+b) - gammln(a) - gammln(b) + a*log(x)+b*log(1.0-x);
+	if(x < (a+1.0)/(a+b+2.0)) return ( bt + log(betacf(a, b, x)) - log(a) );
+	else return log(1.0 - exp(bt)*betacf(b, a, 1.0-x)/b) ;
+}
 
 double Fdistribution::betacf(const double a, const double b, const double x){
 	int m,m2;
@@ -119,6 +129,7 @@ double Fdistribution::betaiapprox(const double a, const double b, const double x
         ans = sum*(xu-x)*exp(a1*lnmu-gammln(a)+b1*lnmuc-gammln(b)+gammln(a+b));
         return ans>0.0? 1.0-ans : -ans;
 }
+
 
 double Fdistribution::invbetai(const double p, const double a, const double b){
 	const double EPS=1.e-8;
@@ -183,6 +194,18 @@ double Fdistribution::cdf(double f){
 		}
 	}
 	return betai(0.5*nu1, 0.5*nu2, nu1*f/(nu2+nu1*f));
+}
+
+double Fdistribution::lncdf(double f){
+	if(f < 0.){
+		if(fabs(f) > 1E-10){
+			printf("Bad f. Must >= 0.");
+			throw 1;
+		}else{
+			return 0.;
+		}
+	}
+	return betailn(0.5*nu1, 0.5*nu2, nu1*f/(nu2+nu1*f));
 }
 
 double Fdistribution::invcdf(double p){

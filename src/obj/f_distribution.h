@@ -26,6 +26,7 @@ class Fdistribution{
 	double fac;
 	double gammln(const double);
 	double betai(const double, const double, const double);
+	double betailn(const double, const double, const double);
 	double betaiapprox(const double, const double, const double);
 	double betacf(const double, const double, const double);
 	double invbetai(const double, const double, const double);
@@ -33,6 +34,7 @@ class Fdistribution{
 	Fdistribution(double, double);
 	double p(double);
 	double cdf(double);
+	double lncdf(double);
 	double invcdf(double);
 };
 
